@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.getshitdone.data.Todo
+import com.example.getshitdone.data.TodoItemUiState
 import com.example.getshitdone.ui.theme.GetShitDoneTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 */
 @Composable
 fun GetShitDoneApp(modifier: Modifier = Modifier) {
-    val todos = remember { mutableStateListOf<Todo>() }
+    val todos = remember { mutableStateListOf<TodoItemUiState>() }
 
     Column(modifier = modifier.padding(8.dp)) {
         Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {

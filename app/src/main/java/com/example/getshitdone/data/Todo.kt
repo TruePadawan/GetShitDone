@@ -3,7 +3,7 @@ package com.example.getshitdone.data
 import java.util.UUID
 import kotlin.collections.contains
 
-data class Todo(
+data class TodoItemUiState(
     val id: String = UUID.randomUUID().toString(),
     var title: String, var desc: String? = "", var isComplete: Boolean = false
 )
@@ -15,7 +15,7 @@ data class UpdateTodoPayload(
 )
 
 class LocalTodosDataSource {
-    private val todos = mutableMapOf<String, Todo>()
+    private val todos = mutableMapOf<String, TodoItemUiState>()
 
     /**
      * Get all TodoItems
@@ -29,7 +29,7 @@ class LocalTodosDataSource {
      *
      * @return the newly created TodoItem
      * */
-    fun addTodo(todo: Todo) {
+    fun addTodo(todo: TodoItemUiState) {
         todos[todo.id] = todo
     }
 
@@ -59,7 +59,7 @@ class TodoRepository() {
     /**
      * Get all TodoItems
      * */
-    fun getAllTodos(): Map<String, Todo> {
+    fun getAllTodos(): Map<String, TodoItemUiState> {
         return localTodosDataSource.fetchTodos()
     }
 
@@ -68,7 +68,7 @@ class TodoRepository() {
      *
      * @param id The ID of the TodoItem
      * */
-    fun getTodoById(id: String): Todo? {
+    fun getTodoById(id: String): TodoItemUiState? {
         val todos = getAllTodos()
         return todos[id]
     }
@@ -78,7 +78,7 @@ class TodoRepository() {
      *
      * @param isComplete The completion status
      * */
-    fun getTodosByCompletionStatus(isComplete: Boolean): Map<String, Todo> {
+    fun getTodosByCompletionStatus(isComplete: Boolean): Map<String, TodoItemUiState> {
         val todos = getAllTodos()
         return todos.filter { it.value.isComplete == isComplete }
     }
@@ -91,8 +91,8 @@ class TodoRepository() {
      *
      * @return the newly created TodoItem
      * */
-    fun addTodo(title: String, description: String? = null): Todo {
-        val todo = Todo(title = title, desc = description)
+    fun addTodo(title: String, description: String? = null): TodoItemUiState {
+        val todo = TodoItemUiState(title = title, desc = description)
         localTodosDataSource.addTodo(todo)
         return todo
     }
