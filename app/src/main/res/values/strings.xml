@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GetShitDone</string>
+    <string name="create_todo">Create a TODO</string>
 </resources>
