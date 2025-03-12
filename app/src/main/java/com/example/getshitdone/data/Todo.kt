@@ -7,8 +7,14 @@ data class Todo(
     var title: String, var desc: String? = "", var isComplete: Boolean = false
 )
 
-class LocalTodosDataSource(private val todos: Map<String, Todo> = mapOf<String, Todo>()) {
+class LocalTodosDataSource {
+    private val todos = mutableMapOf<String, Todo>()
+
     fun fetchTodos() = todos
+
+    fun addTodo(todo: Todo) {
+        todos[todo.id] = todo
+    }
 }
 
 class TodoRepository() {
@@ -26,5 +32,11 @@ class TodoRepository() {
     fun getTodosByCompletionStatus(isComplete: Boolean): Map<String, Todo> {
         val todos = getAllTodos()
         return todos.filter { it.value.isComplete == isComplete }
+    }
+
+    fun addTodo(title: String, description: String? = null): Todo {
+        val todo = Todo(title = title, desc = description)
+        localTodosDataSource.addTodo(todo)
+        return todo
     }
 }

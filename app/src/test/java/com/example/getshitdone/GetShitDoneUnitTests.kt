@@ -1,17 +1,27 @@
 package com.example.getshitdone
 
+import com.example.getshitdone.data.TodoRepository
 import org.junit.Test
 
 import org.junit.Assert.*
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class GetShitDoneUnitTests {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun noTodosByDefault() {
+        val todoRepo = TodoRepository()
+
+        val todos = todoRepo.getAllTodos()
+        assertTrue("There should be no todos by default", todos.isEmpty())
+    }
+
+    @Test
+    fun canGetTodosFromTodoRepository() {
+        val todoRepo = TodoRepository()
+
+        val savedTodo = todoRepo.addTodo(title = "Test App")
+        assertEquals(todoRepo.getTodoById(savedTodo.id), savedTodo)
+
+        val todos = todoRepo.getAllTodos()
+        assertTrue("Expected todolist of size 1, actual size - ${todos.size}", todos.size == 1)
     }
 }
