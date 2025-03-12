@@ -1,6 +1,7 @@
 package com.example.getshitdone
 
 import com.example.getshitdone.data.TodoRepository
+import com.example.getshitdone.data.UpdateTodoPayload
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -23,5 +24,17 @@ class GetShitDoneUnitTests {
 
         val todos = todoRepo.getAllTodos()
         assertTrue("Expected todolist of size 1, actual size - ${todos.size}", todos.size == 1)
+    }
+
+    @Test
+    fun canUpdateATodo() {
+        val todoRepo = TodoRepository()
+
+        val savedTodo = todoRepo.addTodo(title = "Test App")
+        val updatePayload = UpdateTodoPayload(title = "Updated Title")
+        todoRepo.updateTodo(id = savedTodo.id, payload = updatePayload)
+        val updatedTodo = todoRepo.getTodoById(savedTodo.id)
+
+        assertEquals(updatedTodo?.title, updatePayload.title)
     }
 }
