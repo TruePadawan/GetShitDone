@@ -17,19 +17,29 @@ data class UpdateTodoPayload(
 class LocalTodosDataSource {
     private val todos = mutableMapOf<String, Todo>()
 
+    /**
+     * Get all TodoItems
+     * */
     fun fetchTodos() = todos
 
+    /**
+     * Add a TodoItem
+     *
+     * @param todo A Todo object which holds the TodoItem data
+     *
+     * @return the newly created TodoItem
+     * */
     fun addTodo(todo: Todo) {
         todos[todo.id] = todo
     }
 
     /**
-     * Update a todo-item
+     * Update a TodoItem
      *
-     * @param id The ID of the todo-item
-     * @param payload The new data for the todo-item
+     * @param id The ID of the TodoItem
+     * @param payload The new data for the TodoItem
      *
-     * @throws Exception if a todo-item with the specified ID isn't found
+     * @throws Exception if a TodoItem with the specified ID isn't found
      * */
     fun updateTodo(id: String, payload: UpdateTodoPayload) {
         if (!todos.contains(id)) {
@@ -46,20 +56,41 @@ class LocalTodosDataSource {
 class TodoRepository() {
     private val localTodosDataSource = LocalTodosDataSource()
 
+    /**
+     * Get all TodoItems
+     * */
     fun getAllTodos(): Map<String, Todo> {
         return localTodosDataSource.fetchTodos()
     }
 
+    /**
+     * Get a TodoItem by its ID
+     *
+     * @param id The ID of the TodoItem
+     * */
     fun getTodoById(id: String): Todo? {
         val todos = getAllTodos()
         return todos[id]
     }
 
+    /**
+     * Filter all todos by their completion status
+     *
+     * @param isComplete The completion status
+     * */
     fun getTodosByCompletionStatus(isComplete: Boolean): Map<String, Todo> {
         val todos = getAllTodos()
         return todos.filter { it.value.isComplete == isComplete }
     }
 
+    /**
+     * Add a TodoItem
+     *
+     * @param title The title of the TodoItem
+     * @param description The optional description of the TodoItem
+     *
+     * @return the newly created TodoItem
+     * */
     fun addTodo(title: String, description: String? = null): Todo {
         val todo = Todo(title = title, desc = description)
         localTodosDataSource.addTodo(todo)
@@ -67,12 +98,12 @@ class TodoRepository() {
     }
 
     /**
-     * Update a todo-item
+     * Update a TodoItem
      *
-     * @param id The ID of the todo-item
-     * @param payload The new data for the todo-item
+     * @param id The ID of the TodoItem
+     * @param payload The new data for the TodoItem
      *
-     * @throws Exception if a todo-item with the specified ID isn't found
+     * @throws Exception if a TodoItem with the specified ID isn't found
      * */
     fun updateTodo(id: String, payload: UpdateTodoPayload) {
         localTodosDataSource.updateTodo(id, payload)
