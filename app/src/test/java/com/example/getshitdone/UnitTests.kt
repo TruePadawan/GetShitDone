@@ -6,7 +6,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-class GetShitDoneUnitTests {
+class UnitTests {
     @Test
     fun noTodosByDefault() {
         val todoRepo = TodoRepository()
