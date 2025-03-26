@@ -15,6 +15,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.getshitdone.components.CreateTodoDialog
 import com.example.getshitdone.ui.GetShitDoneViewModel
 import com.example.getshitdone.ui.theme.GetShitDoneTheme
 
@@ -49,10 +54,14 @@ fun GetShitDoneApp(
     getShitDoneViewModel: GetShitDoneViewModel = viewModel()
 ) {
     val todoListUiState = getShitDoneViewModel.uiState.collectAsState()
+    var openCreateTodoDialog by remember { mutableStateOf(false) }
     val todos = todoListUiState.value.todos
 
     Column(modifier = modifier.padding(8.dp)) {
-        Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = { openCreateTodoDialog = true },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = stringResource(R.string.create_todo),
                 style = MaterialTheme.typography.labelLarge,
@@ -74,6 +83,16 @@ fun GetShitDoneApp(
 
             }
         }
+    }
+
+    if (openCreateTodoDialog) {
+        CreateTodoDialog(
+            onDismissRequest = { openCreateTodoDialog = false },
+            onConfirmation = { title: String, desc: String? ->
+                getShitDoneViewModel.addTodo(title, desc)
+                openCreateTodoDialog = false
+            }
+        )
     }
 }
 
