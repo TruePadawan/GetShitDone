@@ -57,10 +57,17 @@ class TodoRepository() {
     private val localTodosDataSource = LocalTodosDataSource()
 
     /**
-     * Get all TodoItems
+     * Get all TodoItems and optionally filter by completion status
+     *
+     * @param isComplete The completion status
      * */
-    fun getAllTodos(): Map<String, TodoItemUiState> {
-        return localTodosDataSource.fetchTodos()
+    fun getAllTodos(isComplete: Boolean? = null): Map<String, TodoItemUiState> {
+        val todos = localTodosDataSource.fetchTodos()
+        return if (isComplete != null) {
+            todos.filter { it.value.isComplete == isComplete }
+        } else {
+            todos
+        }
     }
 
     /**
@@ -71,16 +78,6 @@ class TodoRepository() {
     fun getTodoById(id: String): TodoItemUiState? {
         val todos = getAllTodos()
         return todos[id]
-    }
-
-    /**
-     * Filter all todos by their completion status
-     *
-     * @param isComplete The completion status
-     * */
-    fun getTodosByCompletionStatus(isComplete: Boolean): Map<String, TodoItemUiState> {
-        val todos = getAllTodos()
-        return todos.filter { it.value.isComplete == isComplete }
     }
 
     /**
