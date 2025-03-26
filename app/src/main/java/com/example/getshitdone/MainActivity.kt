@@ -55,7 +55,7 @@ fun GetShitDoneApp(
 ) {
     val todoListUiState = getShitDoneViewModel.uiState.collectAsState()
     var openCreateTodoDialog by remember { mutableStateOf(false) }
-    val todos = todoListUiState.value.todos
+    val todos = todoListUiState.value
 
     Column(modifier = modifier.padding(8.dp)) {
         Button(
