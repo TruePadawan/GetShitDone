@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.getshitdone.components.CreateTodoDialog
+import com.example.getshitdone.components.TodoItem
 import com.example.getshitdone.ui.GetShitDoneViewModel
 import com.example.getshitdone.ui.theme.GetShitDoneTheme
 
@@ -58,7 +63,7 @@ fun GetShitDoneApp(
     val todos = todoListUiState.value
 
     Column(modifier = modifier.padding(8.dp)) {
-        Button(
+        FilledTonalButton(
             onClick = { openCreateTodoDialog = true },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -78,9 +83,16 @@ fun GetShitDoneApp(
                 )
             }
         } else {
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = 4.dp),
+                thickness = 2.dp,
+                color = Color.Gray
+            )
             /* This column will hold the todos */
-            Column(modifier = Modifier) {
-
+            LazyColumn {
+                items(todos.values.toList()) {
+                    TodoItem(data = it)
+                }
             }
         }
     }
