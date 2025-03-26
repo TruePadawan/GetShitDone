@@ -64,7 +64,7 @@ fun CreateTodoDialog(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(4.dp)
+                    .padding(top = 12.dp)
             )
             Column(
                 modifier = Modifier
