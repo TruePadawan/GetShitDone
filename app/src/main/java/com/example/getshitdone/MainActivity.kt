@@ -14,8 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,7 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.getshitdone.data.TodoItemUiState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.getshitdone.ui.GetShitDoneViewModel
 import com.example.getshitdone.ui.theme.GetShitDoneTheme
 
 class MainActivity : ComponentActivity() {
@@ -44,8 +44,12 @@ class MainActivity : ComponentActivity() {
 * Composable that displays a list of todos and a button for triggering a dialog for creating todos
 */
 @Composable
-fun GetShitDoneApp(modifier: Modifier = Modifier) {
-    val todos = remember { mutableStateListOf<TodoItemUiState>() }
+fun GetShitDoneApp(
+    modifier: Modifier = Modifier,
+    getShitDoneViewModel: GetShitDoneViewModel = viewModel()
+) {
+    val todoListUiState = getShitDoneViewModel.uiState.collectAsState()
+    val todos = todoListUiState.value.todos
 
     Column(modifier = modifier.padding(8.dp)) {
         Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
