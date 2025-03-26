@@ -14,6 +14,12 @@ data class UpdateTodoPayload(
     var isComplete: Boolean? = null
 )
 
+data class TextFieldUiState(
+    var value: String = "",
+    var hasError: Boolean = false,
+    var hasBeenTouched: Boolean = false
+)
+
 class LocalTodosDataSource {
     private val todos = mutableMapOf<String, TodoItemUiState>()
 

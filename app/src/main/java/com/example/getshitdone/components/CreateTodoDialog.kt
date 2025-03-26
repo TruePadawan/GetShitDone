@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -18,21 +19,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.getshitdone.R
+import com.example.getshitdone.data.TextFieldUiState
 import com.example.getshitdone.ui.theme.bodyFontFamily
 
 @Composable
 fun CreateTodoDialog(
     onDismissRequest: () -> Unit,
-    onConfirmation: (String, String) -> Unit,
+    createTodoHandler: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var todoTitle by remember { mutableStateOf("") }
+    var titleTextFieldState by remember { mutableStateOf(TextFieldUiState()) }
     var todoDescription by remember { mutableStateOf("") }
+    val allowSubmission = titleTextFieldState.value.trim().isNotEmpty()
+
+    fun onConfirmation() {
+        createTodoHandler(
+            titleTextFieldState.value,
+            todoDescription
+        )
+        onDismissRequest()
+    }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -61,8 +74,17 @@ fun CreateTodoDialog(
             ) {
                 OutlinedTextField(
                     label = { Text(text = stringResource(R.string.todo_title)) },
-                    value = todoTitle,
-                    onValueChange = { todoTitle = it },
+                    value = titleTextFieldState.value,
+                    onValueChange = {
+                        titleTextFieldState.hasBeenTouched = true
+                        titleTextFieldState =
+                            titleTextFieldState.copy(hasError = it.trim().isEmpty(), value = it)
+                    },
+                    isError = titleTextFieldState.hasBeenTouched && titleTextFieldState.hasError,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
@@ -70,6 +92,10 @@ fun CreateTodoDialog(
                     value = todoDescription,
                     onValueChange = { todoDescription = it },
                     singleLine = false,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
@@ -79,7 +105,7 @@ fun CreateTodoDialog(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-                    TextButton(onClick = { onConfirmation(todoTitle, todoDescription) }) {
+                    TextButton(onClick = { onConfirmation() }, enabled = allowSubmission) {
                         Text(
                             text = stringResource(R.string.confirm_create_todo_form),
                             fontWeight = FontWeight.SemiBold
@@ -89,4 +115,6 @@ fun CreateTodoDialog(
             }
         }
     }
+
+
 }
