@@ -16,4 +16,8 @@ class GetShitDoneViewModel : ViewModel() {
     fun fetchTodos(isComplete: Boolean? = null): Map<String, TodoItemUiState> {
         return repository.getAllTodos(isComplete)
     }
+
+    fun addTodo(title: String, description: String?): TodoItemUiState {
+        return repository.addTodo(title, description)
+    }
 }
