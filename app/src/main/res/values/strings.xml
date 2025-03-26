@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">GetShitDone</string>
     <string name="create_todo">Create a TODO</string>
+    <string name="todo_title">Title*</string>
+    <string name="todo_desc">Description</string>
+    <string name="dismiss_form">Cancel</string>
+    <string name="confirm_create_todo_form">Create TODO</string>
 </resources>
