@@ -5,4 +5,6 @@
     <string name="todo_desc">Description</string>
     <string name="dismiss_form">Cancel</string>
     <string name="confirm_create_todo_form">Create TODO</string>
+    <string name="create_todo_dialog_confirm_action">Create TODO</string>
+    <string name="create_todo_dialog_headline">Create a TODO</string>
 </resources>

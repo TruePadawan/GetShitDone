@@ -57,7 +57,7 @@ fun CreateTodoDialog(
                 .padding(4.dp)
         ) {
             Text(
-                text = "Create a TODO",
+                text = stringResource(R.string.create_todo_dialog_headline),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 fontFamily = bodyFontFamily,
@@ -107,7 +107,7 @@ fun CreateTodoDialog(
                     }
                     TextButton(onClick = { onConfirmation() }, enabled = allowSubmission) {
                         Text(
-                            text = stringResource(R.string.confirm_create_todo_form),
+                            text = stringResource(R.string.create_todo_dialog_confirm_action),
                             fontWeight = FontWeight.SemiBold
                         )
                     }
