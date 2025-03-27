@@ -22,6 +22,7 @@ import com.example.getshitdone.ui.theme.GetShitDoneTheme
 fun TodoItem(
     data: TodoItemUiState,
     editTodoHandler: (payload: UpdateTodoPayload) -> Unit,
+    deleteTodoHandler: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showEditTodoDialog by remember { mutableStateOf(false) }
@@ -41,7 +42,8 @@ fun TodoItem(
         EditTodoDialog(
             todo = data,
             closeDialogHandler = { showEditTodoDialog = false },
-            editTodoHandler = editTodoHandler
+            editTodoHandler = editTodoHandler,
+            deleteTodoHandler = deleteTodoHandler
         )
     }
 }
@@ -57,6 +59,7 @@ fun TodoItemPreview() {
                 title = "Create a TODO",
             ),
             editTodoHandler = editTodoHandler,
+            deleteTodoHandler = {}
         )
 
     }

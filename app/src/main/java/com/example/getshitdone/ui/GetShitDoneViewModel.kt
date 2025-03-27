@@ -10,23 +10,27 @@ import kotlinx.coroutines.flow.update
 
 class GetShitDoneViewModel : ViewModel() {
     private val repository = TodoRepository()
-    private var todoListMap = repository.getAllTodos().toMutableMap()
-    private var _uiState = MutableStateFlow(todoListMap.values.toList())
+    private var _uiState = MutableStateFlow(repository.getAllTodos().values.toList())
     val uiState = _uiState.asStateFlow()
 
-    fun addTodo(payload: AddTodoPayload) {
-        val todoItemUiState = repository.addTodo(payload)
-        todoListMap[todoItemUiState.id] = todoItemUiState
+    private fun refreshTodos() {
         _uiState.update {
-            todoListMap.values.toList()
+            repository.getAllTodos().values.toList()
         }
     }
 
+    fun addTodo(payload: AddTodoPayload) {
+        repository.addTodo(payload)
+        refreshTodos()
+    }
+
     fun updateTodo(id: String, payload: UpdateTodoPayload) {
-        val updatedTodoItemUiState = repository.updateTodo(id, payload)
-        todoListMap[updatedTodoItemUiState.id] = updatedTodoItemUiState
-        _uiState.update {
-            todoListMap.values.toList()
-        }
+        repository.updateTodo(id, payload)
+        refreshTodos()
+    }
+
+    fun deleteTodo(id: String) {
+        repository.deleteTodo(id)
+        refreshTodos()
     }
 }

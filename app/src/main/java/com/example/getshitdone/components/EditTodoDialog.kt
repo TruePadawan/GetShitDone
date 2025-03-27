@@ -40,6 +40,7 @@ fun EditTodoDialog(
     todo: TodoItemUiState,
     closeDialogHandler: () -> Unit,
     editTodoHandler: (payload: UpdateTodoPayload) -> Unit,
+    deleteTodoHandler: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var titleTextFieldState by remember { mutableStateOf(TextFieldUiState(value = todo.title)) }
@@ -53,6 +54,11 @@ fun EditTodoDialog(
             description = todoDescription, isComplete = todoCompletionStatus
         )
         editTodoHandler(payload)
+        closeDialogHandler()
+    }
+
+    fun onDeleteRequest() {
+        deleteTodoHandler()
         closeDialogHandler()
     }
 
@@ -128,7 +134,7 @@ fun EditTodoDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextButton(onClick = { }) {
+                    TextButton(onClick = { onDeleteRequest() }) {
                         Text(
                             text = stringResource(R.string.edit_todo_dialog_delete_action),
                             fontWeight = FontWeight.Bold,

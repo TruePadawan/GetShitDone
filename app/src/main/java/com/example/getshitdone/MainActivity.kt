@@ -97,6 +97,9 @@ fun GetShitDoneApp(
                         data = it,
                         editTodoHandler = { payload: UpdateTodoPayload ->
                             getShitDoneViewModel.updateTodo(it.id, payload)
+                        },
+                        deleteTodoHandler = {
+                            getShitDoneViewModel.deleteTodo(it.id)
                         }
                     )
                 }

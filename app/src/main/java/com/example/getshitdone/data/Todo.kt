@@ -56,6 +56,22 @@ class LocalTodosDataSource {
             return todos[id]!!
         }
     }
+
+    /**
+     * Delete a TodoItem
+     *
+     * @param id The ID of the TodoItem
+     *
+     * @throws Exception if a TodoItem with the specified ID isn't found
+     *
+     * */
+    fun deleteTodo(id: String) {
+        if (!todos.contains(id)) {
+            throw Exception("Couldn't find todo item with specified id")
+        } else {
+            todos.remove(id)
+        }
+    }
 }
 
 class TodoRepository() {
@@ -107,5 +123,17 @@ class TodoRepository() {
      * */
     fun updateTodo(id: String, payload: UpdateTodoPayload): TodoItemUiState {
         return localTodosDataSource.updateTodo(id, payload)
+    }
+
+    /**
+     * Delete a TodoItem
+     *
+     * @param id The ID of the TodoItem
+     *
+     * @throws Exception if a TodoItem with the specified ID isn't found
+     *
+     * */
+    fun deleteTodo(id: String) {
+        localTodosDataSource.deleteTodo(id)
     }
 }
