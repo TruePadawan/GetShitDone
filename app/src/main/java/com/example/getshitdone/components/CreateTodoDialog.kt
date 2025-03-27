@@ -49,7 +49,7 @@ fun CreateTodoDialog(
 
     Dialog(
         onDismissRequest = onDismissRequest,
-        DialogProperties(usePlatformDefaultWidth = false, dismissOnClickOutside = false)
+        DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Card(
             modifier = modifier
