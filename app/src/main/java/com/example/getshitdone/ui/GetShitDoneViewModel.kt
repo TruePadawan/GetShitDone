@@ -1,6 +1,7 @@
 package com.example.getshitdone.ui
 
 import androidx.lifecycle.ViewModel
+import com.example.getshitdone.data.AddTodoPayload
 import com.example.getshitdone.data.TodoItemUiState
 import com.example.getshitdone.data.TodoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ class GetShitDoneViewModel : ViewModel() {
     }
 
     fun addTodo(title: String, description: String?): TodoItemUiState {
-        return repository.addTodo(title, description)
+        val payload = AddTodoPayload(title, description)
+        return repository.addTodo(payload)
     }
 }

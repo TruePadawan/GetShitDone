@@ -1,24 +1,18 @@
 package com.example.getshitdone.data
 
-import java.util.UUID
-import kotlin.collections.contains
 
-data class TodoItemUiState(
-    val id: String = UUID.randomUUID().toString(),
-    var title: String, var desc: String? = "", var isComplete: Boolean = false
+data class AddTodoPayload(
+    val title: String,
+    val desc: String?
 )
 
 data class UpdateTodoPayload(
-    var title: String? = null,
-    var desc: String? = null,
-    var isComplete: Boolean? = null
+    val title: String,
+    val desc: String? = null,
+    val isComplete: Boolean
 )
 
-data class TextFieldUiState(
-    var value: String = "",
-    var hasError: Boolean = false,
-    var hasBeenTouched: Boolean = false
-)
+
 
 class LocalTodosDataSource {
     private val todos = mutableMapOf<String, TodoItemUiState>()
@@ -31,12 +25,14 @@ class LocalTodosDataSource {
     /**
      * Add a TodoItem
      *
-     * @param todo A Todo object which holds the TodoItem data
+     * @param payload An object containing the TodoItem title and description
      *
      * @return the newly created TodoItem
      * */
-    fun addTodo(todo: TodoItemUiState) {
+    fun addTodo(payload: AddTodoPayload): TodoItemUiState {
+        val todo = TodoItemUiState(title = payload.title, desc = payload.desc)
         todos[todo.id] = todo
+        return todo
     }
 
     /**
@@ -46,16 +42,21 @@ class LocalTodosDataSource {
      * @param payload The new data for the TodoItem
      *
      * @throws Exception if a TodoItem with the specified ID isn't found
+     *
+     * @return the updated TodoItem
      * */
-    fun updateTodo(id: String, payload: UpdateTodoPayload) {
+    fun updateTodo(id: String, payload: UpdateTodoPayload): TodoItemUiState {
         if (!todos.contains(id)) {
             throw Exception("Couldn't find todo item with specified id")
+        } else {
+            todos[id] = todos[id]?.copy(
+                title = payload.title,
+                desc = payload.desc,
+                isComplete = payload.isComplete
+            )!!
+            return todos[id]!!
         }
 
-        val currentTodoData = todos[id]!!
-        todos[id]!!.title = payload.title ?: currentTodoData.title
-        todos[id]!!.desc = payload.desc ?: currentTodoData.desc
-        todos[id]!!.isComplete = payload.isComplete ?: currentTodoData.isComplete
     }
 }
 
@@ -94,10 +95,8 @@ class TodoRepository() {
      *
      * @return the newly created TodoItem
      * */
-    fun addTodo(title: String, description: String? = null): TodoItemUiState {
-        val todo = TodoItemUiState(title = title, desc = description)
-        localTodosDataSource.addTodo(todo)
-        return todo
+    fun addTodo(payload: AddTodoPayload): TodoItemUiState {
+        return localTodosDataSource.addTodo(payload)
     }
 
     /**
@@ -108,7 +107,7 @@ class TodoRepository() {
      *
      * @throws Exception if a TodoItem with the specified ID isn't found
      * */
-    fun updateTodo(id: String, payload: UpdateTodoPayload) {
-        localTodosDataSource.updateTodo(id, payload)
+    fun updateTodo(id: String, payload: UpdateTodoPayload): TodoItemUiState {
+        return localTodosDataSource.updateTodo(id, payload)
     }
 }
