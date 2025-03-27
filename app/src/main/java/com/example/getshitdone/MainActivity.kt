@@ -59,12 +59,12 @@ fun GetShitDoneApp(
     getShitDoneViewModel: GetShitDoneViewModel = viewModel()
 ) {
     val todoListUiState = getShitDoneViewModel.uiState.collectAsState()
-    var openCreateTodoDialog by remember { mutableStateOf(false) }
+    var showCreateTodoDialog by remember { mutableStateOf(false) }
     val todos = todoListUiState.value
 
     Column(modifier = modifier.padding(8.dp)) {
         FilledTonalButton(
-            onClick = { openCreateTodoDialog = true },
+            onClick = { showCreateTodoDialog = true },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -97,9 +97,9 @@ fun GetShitDoneApp(
         }
     }
 
-    if (openCreateTodoDialog) {
+    if (showCreateTodoDialog) {
         CreateTodoDialog(
-            closeDialogHandler = { openCreateTodoDialog = false },
+            closeDialogHandler = { showCreateTodoDialog = false },
             createTodoHandler = { title: String, desc: String? ->
                 getShitDoneViewModel.addTodo(title, desc)
             }
