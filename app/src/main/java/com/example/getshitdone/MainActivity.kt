@@ -99,7 +99,7 @@ fun GetShitDoneApp(
 
     if (openCreateTodoDialog) {
         CreateTodoDialog(
-            onDismissRequest = { openCreateTodoDialog = false },
+            closeDialogHandler = { openCreateTodoDialog = false },
             createTodoHandler = { title: String, desc: String? ->
                 getShitDoneViewModel.addTodo(title, desc)
             }

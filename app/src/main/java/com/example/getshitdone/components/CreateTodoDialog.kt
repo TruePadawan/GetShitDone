@@ -31,7 +31,7 @@ import com.example.getshitdone.ui.theme.bodyFontFamily
 
 @Composable
 fun CreateTodoDialog(
-    onDismissRequest: () -> Unit,
+    closeDialogHandler: () -> Unit,
     createTodoHandler: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -44,11 +44,11 @@ fun CreateTodoDialog(
             titleTextFieldState.value,
             todoDescription
         )
-        onDismissRequest()
+        closeDialogHandler()
     }
 
     Dialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = closeDialogHandler,
         DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Card(
@@ -99,7 +99,7 @@ fun CreateTodoDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = onDismissRequest) {
+                    TextButton(onClick = closeDialogHandler) {
                         Text(
                             text = stringResource(R.string.dismiss_form),
                             fontWeight = FontWeight.SemiBold
