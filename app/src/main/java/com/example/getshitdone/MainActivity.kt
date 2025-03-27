@@ -60,9 +60,9 @@ fun GetShitDoneApp(
     modifier: Modifier = Modifier,
     getShitDoneViewModel: GetShitDoneViewModel = viewModel()
 ) {
-    val todoListUiState = getShitDoneViewModel.uiState.collectAsState()
+    val todos by getShitDoneViewModel.uiState.collectAsState()
     var showCreateTodoDialog by remember { mutableStateOf(false) }
-    val todos = todoListUiState.value
+//    val todos = todoListUiState.values.toList()
 
     Column(modifier = modifier.padding(8.dp)) {
         FilledTonalButton(
@@ -92,7 +92,7 @@ fun GetShitDoneApp(
             )
             /* This column will hold the todos */
             LazyColumn {
-                items(todos.values.toList()) {
+                items(todos, key = { todo -> todo.id }) {
                     TodoItem(
                         data = it,
                         editTodoHandler = { payload: UpdateTodoPayload ->

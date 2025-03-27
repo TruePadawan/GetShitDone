@@ -13,7 +13,6 @@ data class UpdateTodoPayload(
 )
 
 
-
 class LocalTodosDataSource {
     private val todos = mutableMapOf<String, TodoItemUiState>()
 
@@ -56,7 +55,6 @@ class LocalTodosDataSource {
             )!!
             return todos[id]!!
         }
-
     }
 }
 

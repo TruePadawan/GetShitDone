@@ -33,7 +33,7 @@ fun TodoItem(
         Text(
             text = data.title,
             textAlign = TextAlign.Center,
-            textDecoration = if (data.isComplete) TextDecoration.Underline else TextDecoration.None
+            textDecoration = if (data.isComplete) TextDecoration.LineThrough else TextDecoration.None
         )
     }
 
