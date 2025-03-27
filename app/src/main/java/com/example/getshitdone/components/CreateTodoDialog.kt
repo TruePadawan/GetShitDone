@@ -26,13 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.getshitdone.R
+import com.example.getshitdone.data.AddTodoPayload
 import com.example.getshitdone.data.TextFieldUiState
 import com.example.getshitdone.ui.theme.bodyFontFamily
 
 @Composable
 fun CreateTodoDialog(
     closeDialogHandler: () -> Unit,
-    createTodoHandler: (String, String) -> Unit,
+    createTodoHandler: (payload: AddTodoPayload) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var titleTextFieldState by remember { mutableStateOf(TextFieldUiState()) }
@@ -40,10 +41,8 @@ fun CreateTodoDialog(
     val allowSubmission = titleTextFieldState.value.trim().isNotEmpty()
 
     fun onConfirmation() {
-        createTodoHandler(
-            titleTextFieldState.value,
-            todoDescription
-        )
+        val payload = AddTodoPayload(titleTextFieldState.value, todoDescription)
+        createTodoHandler(payload)
         closeDialogHandler()
     }
 

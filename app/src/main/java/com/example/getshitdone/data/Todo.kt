@@ -3,12 +3,12 @@ package com.example.getshitdone.data
 
 data class AddTodoPayload(
     val title: String,
-    val desc: String?
+    val description: String?
 )
 
 data class UpdateTodoPayload(
     val title: String,
-    val desc: String? = null,
+    val description: String? = null,
     val isComplete: Boolean
 )
 
@@ -30,7 +30,7 @@ class LocalTodosDataSource {
      * @return the newly created TodoItem
      * */
     fun addTodo(payload: AddTodoPayload): TodoItemUiState {
-        val todo = TodoItemUiState(title = payload.title, desc = payload.desc)
+        val todo = TodoItemUiState(title = payload.title, description = payload.description)
         todos[todo.id] = todo
         return todo
     }
@@ -51,7 +51,7 @@ class LocalTodosDataSource {
         } else {
             todos[id] = todos[id]?.copy(
                 title = payload.title,
-                desc = payload.desc,
+                description = payload.description,
                 isComplete = payload.isComplete
             )!!
             return todos[id]!!

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -17,7 +18,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -25,24 +28,38 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.getshitdone.R
 import com.example.getshitdone.data.TextFieldUiState
 import com.example.getshitdone.data.TodoItemUiState
+import com.example.getshitdone.data.UpdateTodoPayload
 import com.example.getshitdone.ui.theme.bodyFontFamily
 
 @Composable
 fun EditTodoDialog(
     todo: TodoItemUiState,
     closeDialogHandler: () -> Unit,
-    editTodoHandler: (title: String, description: String?, isComplete: Boolean?) -> Unit,
+    editTodoHandler: (payload: UpdateTodoPayload) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var titleTextFieldState by remember { mutableStateOf(TextFieldUiState(value = todo.title)) }
-    var todoDescription by remember { mutableStateOf(todo.desc ?: "") }
+    var todoDescription by remember { mutableStateOf(todo.description ?: "") }
     var todoCompletionStatus by remember { mutableStateOf(todo.isComplete) }
     val allowSubmission = titleTextFieldState.value.trim().isNotEmpty()
 
-    Dialog(onDismissRequest = closeDialogHandler) {
+    fun onConfirmation() {
+        val payload = UpdateTodoPayload(
+            title = titleTextFieldState.value,
+            description = todoDescription, isComplete = todoCompletionStatus
+        )
+        editTodoHandler(payload)
+        closeDialogHandler()
+    }
+
+    Dialog(
+        onDismissRequest = closeDialogHandler,
+        DialogProperties(usePlatformDefaultWidth = false)
+    ) {
         Card(
             modifier = modifier
                 .fillMaxWidth()
@@ -93,18 +110,28 @@ fun EditTodoDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Switch(
-                    checked = todoCompletionStatus,
-                    onCheckedChange = { todoCompletionStatus = it })
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextButton(onClick = {}) {
+                    Text(text = "Done?")
+                    Switch(
+                        checked = todoCompletionStatus,
+                        onCheckedChange = { todoCompletionStatus = it })
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TextButton(onClick = { }) {
                         Text(
                             text = stringResource(R.string.edit_todo_dialog_delete_action),
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
 
@@ -116,9 +143,9 @@ fun EditTodoDialog(
                             )
                         }
 
-                        TextButton(onClick = { }, enabled = allowSubmission) {
+                        TextButton(onClick = { onConfirmation() }, enabled = allowSubmission) {
                             Text(
-                                text = stringResource(R.string.create_todo_dialog_confirm_action),
+                                text = stringResource(R.string.update_todo_dialog_confirm_action),
                                 fontWeight = FontWeight.SemiBold
                             )
                         }

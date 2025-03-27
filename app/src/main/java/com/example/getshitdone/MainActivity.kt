@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.getshitdone.components.CreateTodoDialog
 import com.example.getshitdone.components.TodoItem
+import com.example.getshitdone.data.AddTodoPayload
+import com.example.getshitdone.data.UpdateTodoPayload
 import com.example.getshitdone.ui.GetShitDoneViewModel
 import com.example.getshitdone.ui.theme.GetShitDoneTheme
 
@@ -91,7 +93,12 @@ fun GetShitDoneApp(
             /* This column will hold the todos */
             LazyColumn {
                 items(todos.values.toList()) {
-                    TodoItem(data = it)
+                    TodoItem(
+                        data = it,
+                        editTodoHandler = { payload: UpdateTodoPayload ->
+                            getShitDoneViewModel.updateTodo(it.id, payload)
+                        }
+                    )
                 }
             }
         }
@@ -100,8 +107,8 @@ fun GetShitDoneApp(
     if (showCreateTodoDialog) {
         CreateTodoDialog(
             closeDialogHandler = { showCreateTodoDialog = false },
-            createTodoHandler = { title: String, desc: String? ->
-                getShitDoneViewModel.addTodo(title, desc)
+            createTodoHandler = { payload: AddTodoPayload ->
+                getShitDoneViewModel.addTodo(payload)
             }
         )
     }

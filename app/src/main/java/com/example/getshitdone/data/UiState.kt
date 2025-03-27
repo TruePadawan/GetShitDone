@@ -4,7 +4,7 @@ import java.util.UUID
 
 data class TodoItemUiState(
     val id: String = UUID.randomUUID().toString(),
-    val title: String, val desc: String? = "", val isComplete: Boolean = false
+    val title: String, val description: String? = "", val isComplete: Boolean = false
 )
 
 data class TextFieldUiState(

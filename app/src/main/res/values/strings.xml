@@ -7,5 +7,6 @@
     <string name="create_todo_dialog_confirm_action">Create TODO</string>
     <string name="create_todo_dialog_headline">Create a TODO</string>
     <string name="edit_todo_dialog_headline">Edit a TODO</string>
+    <string name="update_todo_dialog_confirm_action">Update TODO</string>
     <string name="edit_todo_dialog_delete_action">Delete TODO</string>
 </resources>
